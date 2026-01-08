@@ -65,7 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Set default settings
       await prisma.user.update({
         where: { id: user.id },
-        data: { settings: DEFAULT_SETTINGS }
+        data: { settings: DEFAULT_SETTINGS as object }
       })
     }
   }

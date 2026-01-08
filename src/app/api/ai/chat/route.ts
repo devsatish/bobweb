@@ -4,9 +4,11 @@ import { prisma } from "@/lib/db"
 import OpenAI from "openai"
 import { v4 as uuid } from "uuid"
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+}
 
 const SYSTEM_PROMPT = `You are BobBot, a friendly AI assistant in BobWeb - a visual home desktop app inspired by Microsoft Bob.
 
@@ -211,6 +213,7 @@ export async function POST(request: Request) {
             encoder.encode(`data: ${JSON.stringify({ type: "session", sessionId: chatSession.id })}\n\n`)
           )
 
+          const openai = getOpenAIClient()
           const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages,
